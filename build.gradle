@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id "com.diffplug.spotless" version "6.8.0"
+}
+
+group 'io.github.realyusufismail'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'net.dv8tion', name: 'JDA', version: '5.0.0-alpha.17'
+    //.env
+    implementation group: 'io.github.yusufsdiscordbot', name: 'config', version: '1.0.3'
+    //logger
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.11'
+    implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.11'
+    //Test
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileJava {
+    // Makes spotlessApply task run on every compile/build.
+    dependsOn 'spotlessApply'
+
+    // Nails the Java-Version of every Subproject
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+spotless {
+    java {
+        targetExclude("build/**")
+        eclipse('4.21.0').configFile("${rootProject.rootDir}/meta/formatting/google-style-eclipse.xml")
+    }
+}
